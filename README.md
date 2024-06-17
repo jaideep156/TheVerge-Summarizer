@@ -1,1 +1,1 @@
-## [The Verge](https://www.theverge.com/)article summarizer using Google Gemini. 
+## [The Verge](https://www.theverge.com/) article summarizer using Google Gemini. 
