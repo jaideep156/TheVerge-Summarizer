@@ -22,9 +22,11 @@ prompt="""You are a news article summarizer. You will be getting the whole artic
 
 BASE_URL = "https://newsapi.org/v2/top-headlines"
 
-#Loading my API keys from .env file
-NEWS_API = os.getenv('NEWS_API')
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# Loading my API keys from .streamlit/secrets.toml file 
+# It has been added to .gitignore so that my API keys aren't exposed
+NEWS_API = st.secrets["NEWS_API"]
+api_key = st.secrets["GOOGLE_API_KEY"]
+genai.configure(api_key=api_key)
 
 def generate_gemini_content(prompt,article_content):
     model=genai.GenerativeModel("gemini-1.5-pro")
