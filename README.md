@@ -1,1 +1,1 @@
-## [The Verge](https://www.theverge.com/) article summarizer using Google Gemini. 
+### Crisp summaries of the hottest tech articles from [The Verge](https://www.theverge.com/) using Google Gemini🪄
