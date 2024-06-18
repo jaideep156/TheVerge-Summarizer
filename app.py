@@ -22,8 +22,8 @@ prompt="""You are a news article summarizer. You will be getting the whole artic
 
 BASE_URL = "https://newsapi.org/v2/top-headlines"
 
-# Loading my API keys from .streamlit/secrets.toml file 
-# It has been added to .gitignore so that my API keys aren't exposed
+# I have added my secret API keys using the streamlit cloud UI. You can follow the process using this link https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management#deploy-an-app-and-set-up-secrets
+
 NEWS_API = st.secrets["NEWS_API"]
 api_key = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=api_key)
