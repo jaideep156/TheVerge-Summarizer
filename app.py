@@ -70,7 +70,7 @@ def fetch_and_extract_article(url):
 
 st.title("AI Spotlight: A news digest🔮")
 
-st.markdown("##### Get the latest scoop on tech news🪄This project uses the power of Google Gemini to deliver crisp summarizes of the hottest articles from [The Verge](https://www.theverge.com/).")
+st.markdown("##### Get the latest scoop on tech news🪄This project uses the power of Google Gemini to deliver crisp summaries of the hottest articles from [The Verge](https://www.theverge.com/).")
 
 st.markdown("###### 📰The articles are extracted from the ```/v2/top-headlines``` endpoint of [newsapi.org](https://newsapi.org/docs/endpoints/top-headlines).")
 st.markdown("###### 💻Checkout the full code on [GitHub](https://github.com/jaideep156/TheVerge-Summarizer/).")
