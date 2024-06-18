@@ -101,9 +101,9 @@ for index, article in enumerate(data['articles'][1:], start=1):
         
         with st.spinner("Summarizing using Google Gemini..."):
             summary = generate_gemini_content(prompt, article_content)
-        
+            
         st.write(summary)
-        st.markdown(f"[View the full article]({url})")
+        st.caption(f"[View the full article]({url})")
 
     st.write("---")
 
