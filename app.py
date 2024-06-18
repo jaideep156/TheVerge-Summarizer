@@ -7,12 +7,12 @@ from bs4 import BeautifulSoup
 import google.generativeai as genai
 
 load_dotenv()
+
 st.set_page_config(
     page_title="TheVerge Summarizer",
     page_icon="🧙‍♂️",
     initial_sidebar_state="collapsed"
 )
-
 
 with st.sidebar:
     st.subheader("""Checkout the code below""")
@@ -107,5 +107,4 @@ for index, article in enumerate(data['articles'][1:], start=1):
 
     st.write("---")
 
-
-st.markdown("⭐ this projoect on [GitHub](https://github.com/jaideep156/TheVerge-Summarizer/).")
+st.markdown("⭐ this project on [GitHub](https://github.com/jaideep156/TheVerge-Summarizer/).")
