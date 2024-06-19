@@ -21,30 +21,45 @@ BASE_URL = "https://newsapi.org/v2/top-headlines"
 # I have added my secret API keys using the streamlit cloud UI. You can follow the process using this link https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management#deploy-an-app-and-set-up-secrets
 
 NEWS_API = st.secrets["NEWS_API"]
-api_key = st.secrets["GOOGLE_API_KEY"]
-genai.configure(api_key=api_key)
+BACKUP_NEWS_API_KEY = st.secrets['backup_key']['BACKUP_NEWS_KEY']
+google_api_key = st.secrets["GOOGLE_API_KEY"]
+genai.configure(api_key=google_api_key)
 
 def generate_gemini_content(prompt,article_content):
     model=genai.GenerativeModel("gemini-1.5-pro")
     response=model.generate_content(prompt+article_content)
     return response.text
-
-def get_api_data(api_key):
-    endpoint_url = f"{BASE_URL}?sources=the-verge&apiKey={NEWS_API}&pageSize=6"
+    
+def get_api_data(api_key, backup_api_key):
+    endpoint_url = f"{BASE_URL}?sources=the-verge&apiKey={api_key}&pageSize=6"
     
     try:
         response = requests.get(endpoint_url)
         response.raise_for_status()
         data = response.json()
-        return data
+        return data, None
     except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")
+        error_code = response.status_code
+        custom_messages = {
+            400: f"Bad request. Please check your input. (Error code: {error_code})",
+            401: f"Unauthorized access. Please check your API key. (Error code: {error_code})",
+            403: f"Forbidden request. You don't have permission to access this resource. (Error code: {error_code})",
+            404: f"Resource not found. Please check the URL. (Error code: {error_code})",
+            429: f"Either exceeded API rate limits or too many requests. Please try again later. (Error code: {error_code})",
+            500: f"Internal server error. Please try again later. (Error code: {error_code})",
+        }
+        error_message = custom_messages.get(error_code, f"HTTP error occurred: {response.reason} (Error code: {error_code})")
+        # Check if the error is due to API key issue and attempt using backup key
+        if error_message in custom_messages.values() and api_key != backup_api_key:
+            return get_api_data(backup_api_key, api_key)  # Switching to backup API key
+        else:
+            return None, error_message
     except requests.exceptions.RequestException as err:
-        print(f"Error occurred: {err}")
+        return None, "An error occurred while making the request. Please try again later."
     except ValueError as json_err:
-        print(f"JSON decoding error: {json_err}")
+        return None, "Error decoding the response. Please try again later."
 
-data = get_api_data(NEWS_API)
+data, error_message = get_api_data(NEWS_API, BACKUP_NEWS_API_KEY)
 
 def fetch_and_extract_article(url):
     response = requests.get(url)
@@ -76,33 +91,42 @@ st.markdown("###### 📰The articles are extracted from the ```/v2/top-headlines
 st.markdown("###### 💻Checkout the full code on [GitHub](https://github.com/jaideep156/TheVerge-Summarizer/).")
 st.write("---")
 
-st.markdown("###### The following are the articles. Click on their respective buttons to summarize them.")
+if error_message:
+    st.error(error_message)
+else:
+    st.markdown("###### The following are the articles. Click on their respective buttons to summarize them.")
+    verge_present = any(article['title'] == "The Verge" for article in data['articles'])
 
-for index, article in enumerate(data['articles'][1:], start=1):
-    title = article['title']
-    url = article['url']
-    author = article['author']
-    urlToImage = article['urlToImage']
+    filtered_articles = [article for article in data['articles'] if article['title'] != "The Verge"]
 
-    publishedAt = article['publishedAt']
-    publishedAt = publishedAt.replace("Z", "")
-    dt = datetime.datetime.fromisoformat(publishedAt)
-    formatted_date = dt.strftime("%d/%m/%Y")
+    if not verge_present:
+        filtered_articles = filtered_articles[:5]
 
-    st.subheader(title)
-    st.image(urlToImage,width=675)
-    st.write(f"Written by {author} & published on {formatted_date}")
+    for index, article in enumerate(filtered_articles):
+        title = article['title']
+        url = article['url']
+        author = article['author']
+        urlToImage = article['urlToImage']
+        publishedAt = article['publishedAt']
 
-    if st.button(f"Summarize this article", key=f"summarize_{index}"):
-        with st.spinner("Fetching article..."):
-            article_content = fetch_and_extract_article(url)
-        
-        with st.spinner("Summarizing using Google Gemini..."):
-            summary = generate_gemini_content(prompt, article_content)
+        publishedAt = article['publishedAt']
+        publishedAt = publishedAt.replace("Z", "")
+        dt = datetime.datetime.fromisoformat(publishedAt)
+        formatted_date = dt.strftime("%d/%m/%Y")
+
+        st.subheader(title)
+        st.image(urlToImage, width=675)
+        st.write(f"Written by {author} & published on {formatted_date}")
+
+        if st.button(f"Summarize this article", key=f"summarize_{index}"):
+            with st.spinner("Fetching article..."):
+                article_content = fetch_and_extract_article(url)
             
-        st.write(summary)
-        st.caption(f"[View the full article]({url})")
+            with st.spinner("Summarizing using Google Gemini..."):
+                summary = generate_gemini_content(prompt, article_content)
+                
+            st.write(summary)
+            st.caption(f"[View the full article]({url})")
 
-    st.write("---")
-
-st.markdown("⭐ this project on [GitHub](https://github.com/jaideep156/TheVerge-Summarizer/).")
+        st.write("---")
+    st.markdown("⭐ this project on [GitHub](https://github.com/jaideep156/TheVerge-Summarizer/).")
