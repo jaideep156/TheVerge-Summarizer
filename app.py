@@ -42,7 +42,7 @@ def get_api_data(api_key, backup_api_key):
         error_code = response.status_code
         custom_messages = {
             400: f"Bad request. Please check your input. (Error code: {error_code})",
-            401: f"Unauthorized access. Please check your API key. (Error code: {error_code})",
+            401: f"Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.(Error code: {error_code})",
             403: f"Forbidden request. You don't have permission to access this resource. (Error code: {error_code})",
             404: f"Resource not found. Please check the URL. (Error code: {error_code})",
             429: f"Either exceeded API rate limits or too many requests. Please try again later. (Error code: {error_code})",
@@ -83,7 +83,7 @@ def fetch_and_extract_article(url):
     
     return ' '.join(filtered_paragraphs)
 
-st.title("AI Spotlight: A news digest🔮")
+st.title("Verge-Digest: AI-Powered Article Summarizer🔮")
 
 st.markdown("##### Get the latest scoop on tech news🪄This project uses the power of Google Gemini to deliver crisp summaries of the hottest articles from [The Verge](https://www.theverge.com/).")
 
