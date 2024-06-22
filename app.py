@@ -22,7 +22,11 @@ BACKUP_NEWS_API_KEY = st.secrets['backup_key']['BACKUP_NEWS_KEY']
 google_api_key = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=google_api_key)
 
-data, error_message = get_api_data(NEWS_API, BACKUP_NEWS_API_KEY)
+@st.cache_data(ttl=3600)
+def fetch_data():
+    return get_api_data(NEWS_API, BACKUP_NEWS_API_KEY)
+
+data, error_message = fetch_data()
 
 st.title("Verge-Digest: AI-Powered Article Summarizer🔮")
 st.markdown("##### Get the latest scoop on tech news🪄This project uses the power of Google Gemini to deliver crisp summaries of the hottest articles from [The Verge](https://www.theverge.com/).")
