@@ -22,7 +22,7 @@ BACKUP_NEWS_API_KEY = st.secrets['backup_key']['BACKUP_NEWS_KEY']
 google_api_key = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=google_api_key)
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=7200)
 def fetch_data():
     return get_api_data(NEWS_API, BACKUP_NEWS_API_KEY)
 
