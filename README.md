@@ -3,6 +3,9 @@
 This project is aimed at performing [text summarization](https://en.wikipedia.org/wiki/Automatic_summarization#:~:text=Text%20summarization%20is%20usually%20implemented%20by%20natural%20language%20processing%20methods%2C%20designed%20to%20locate%20the%20most%20informative%20sentences%20in%20a%20given%20document.) of top tech news articles from [The Verge](https://www.theverge.com/) using [Google Gemini 1.5 Pro](https://deepmind.google/technologies/gemini/pro/).
 
 ## To access the live version of the app, click [here](https://verge-digest.streamlit.app/).
+
+![Demo](https://github.com/jaideep156/TheVerge-Summarizer/blob/main/assets/demo.gif)
+
 ## 📊Data
 The articles are fetched from the ```/v2/top-headlines``` endpoint of [newsapi.org](https://newsapi.org/docs/endpoints/top-headlines) with a fallback to the same API but with another key if it fails due to some reason. It gives 6 observations in  `JSON` format with various key value pairs like `article`, `date`, `author`, `link`, etc.   
 
