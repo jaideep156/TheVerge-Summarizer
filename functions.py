@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import google.generativeai as genai
 
 def generate_gemini_content(prompt,article_content):
-    model=genai.GenerativeModel("gemini-1.5-pro")
+    model=genai.GenerativeModel("gemini-2.0-flash")
     response=model.generate_content(prompt+article_content)
     return response.text
 
