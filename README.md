@@ -1,6 +1,6 @@
 # [verge-digest](https://verge-digest.streamlit.app/): AI-powered article summarizer of [TheVerge](https://www.theverge.com/)🪄
 
-This project is aimed at performing [text summarization](https://en.wikipedia.org/wiki/Automatic_summarization#:~:text=Text%20summarization%20is%20usually%20implemented%20by%20natural%20language%20processing%20methods%2C%20designed%20to%20locate%20the%20most%20informative%20sentences%20in%20a%20given%20document.) of top tech news articles from [The Verge](https://www.theverge.com/) using [Google Gemini 1.5 Pro](https://deepmind.google/technologies/gemini/pro/).
+This project is aimed at performing [text summarization](https://en.wikipedia.org/wiki/Automatic_summarization#:~:text=Text%20summarization%20is%20usually%20implemented%20by%20natural%20language%20processing%20methods%2C%20designed%20to%20locate%20the%20most%20informative%20sentences%20in%20a%20given%20document.) of top tech news articles from [The Verge](https://www.theverge.com/) using [Google Gemini 2.0 Flash](https://deepmind.google/models/gemini/flash/).
 
 ## To access the live version of the app, click [here](https://verge-digest.streamlit.app/).
 
